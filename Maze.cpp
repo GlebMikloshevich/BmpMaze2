@@ -233,8 +233,9 @@ void Maze::drawPath() {
             curPoint.second -= 1;
         }
 
-
-        this->reader.pixels[curPoint.first-1][curPoint.second-1] = pathColor;
+        if (!(this->reader.pixels[curPoint.first-1][curPoint.second-1] == this->start
+        || this->reader.pixels[curPoint.first-1][curPoint.second-1] == this->finish))
+            this->reader.pixels[curPoint.first-1][curPoint.second-1] = pathColor;
     }
     //std::cout<<"end";
 }
