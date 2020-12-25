@@ -103,28 +103,53 @@ void Maze::dijkstra() {
 
         //can check value in cycle, but this way i have to add values into queue
         if (simpleMaze[a.x - 1][a.y] == 0){
-            simpleMaze[a.x - 1][a.y] = simpleMaze[a.x][a.y] + 1;
-            queue.push(MazePoint(a.x-1, a.y, simpleMaze[a.x][a.y] +1));
+            simpleMaze[a.x - 1][a.y] = simpleMaze[a.x][a.y] + 10;
+            queue.push(MazePoint(a.x-1, a.y, simpleMaze[a.x][a.y] +10));
             //std::cout<<" -10 ";
         }
 
         if (simpleMaze[a.x + 1][a.y] == 0){
-            simpleMaze[a.x + 1][a.y] = simpleMaze[a.x][a.y] + 1;
-            queue.push(MazePoint(a.x + 1, a.y, simpleMaze[a.x][a.y] +1));
+            simpleMaze[a.x + 1][a.y] = simpleMaze[a.x][a.y] + 10;
+            queue.push(MazePoint(a.x + 1, a.y, simpleMaze[a.x][a.y] +10));
             //std::cout<<" +10 ";
         }
 
         if (simpleMaze[a.x][a.y - 1] == 0){
-            simpleMaze[a.x][a.y - 1] = simpleMaze[a.x][a.y] + 1;
-            queue.push(MazePoint(a.x, a.y-1, simpleMaze[a.x][a.y] +1));
+            simpleMaze[a.x][a.y - 1] = simpleMaze[a.x][a.y] + 10;
+            queue.push(MazePoint(a.x, a.y-1, simpleMaze[a.x][a.y] +10));
             //std::cout<<" 0-1 ";
         }
 
         if (simpleMaze[a.x][a.y + 1] == 0){
-            simpleMaze[a.x][a.y + 1] = simpleMaze[a.x][a.y] + 1;
-            queue.push(MazePoint(a.x, a.y+1, simpleMaze[a.x][a.y] +1));
+            simpleMaze[a.x][a.y + 1] = simpleMaze[a.x][a.y] + 10;
+            queue.push(MazePoint(a.x, a.y+1, simpleMaze[a.x][a.y] +10));
             //std::cout<<" 0+1 ";
         }
+
+        //diagonals
+
+        if (simpleMaze[a.x + 1][a.y + 1] == 0){
+            simpleMaze[a.x + 1][a.y + 1] = simpleMaze[a.x][a.y] + 15;
+            queue.push(MazePoint(a.x + 1, a.y + 1, simpleMaze[a.x][a.y] + 15));
+        }
+
+        if (simpleMaze[a.x - 1][a.y - 1] == 0){
+            simpleMaze[a.x - 1][a.y - 1] = simpleMaze[a.x][a.y] + 15;
+            queue.push(MazePoint(a.x - 1, a.y - 1, simpleMaze[a.x][a.y] + 15));
+        }
+
+        if (simpleMaze[a.x + 1][a.y - 1] == 0){
+            simpleMaze[a.x + 1][a.y - 1] = simpleMaze[a.x][a.y] + 12;
+            queue.push(MazePoint(a.x + 1, a.y - 1, simpleMaze[a.x][a.y] + 12));
+            //std::cout<<" +10 ";
+        }
+
+        if (simpleMaze[a.x - 1][a.y + 1] == 0){
+            simpleMaze[a.x - 1][a.y + 1] = simpleMaze[a.x][a.y] + 12;
+            queue.push(MazePoint(a.x - 1, a.y + 1, simpleMaze[a.x][a.y] + 12));
+        }
+
+
     }
 }
 
@@ -183,14 +208,31 @@ void Maze::drawPath() {
     //std::cout<<"draw path\n";
     while(curPoint.first != start_point.first || curPoint.second != start_point.second){
         //std::cout<<simpleMaze[curPoint.first][curPoint.second]<<' ';
-        if (simpleMaze[curPoint.first][curPoint.second] - simpleMaze[curPoint.first - 1][curPoint.second] == 1)
+        if (simpleMaze[curPoint.first][curPoint.second] - simpleMaze[curPoint.first - 1][curPoint.second] == 10)
             curPoint.first -= 1;
-        else if (simpleMaze[curPoint.first][curPoint.second] - simpleMaze[curPoint.first + 1][curPoint.second] == 1)
+        else if (simpleMaze[curPoint.first][curPoint.second] - simpleMaze[curPoint.first + 1][curPoint.second] == 10)
             curPoint.first += 1;
-        else if (simpleMaze[curPoint.first][curPoint.second] - simpleMaze[curPoint.first][curPoint.second -1 ] == 1)
+        else if (simpleMaze[curPoint.first][curPoint.second] - simpleMaze[curPoint.first][curPoint.second -1 ] == 10)
             curPoint.second -= 1;
-        else if (simpleMaze[curPoint.first][curPoint.second] - simpleMaze[curPoint.first][curPoint.second + 1] == 1)
+        else if (simpleMaze[curPoint.first][curPoint.second] - simpleMaze[curPoint.first][curPoint.second + 1] == 10)
             curPoint.second += 1;
+        else if (simpleMaze[curPoint.first][curPoint.second] - simpleMaze[curPoint.first + 1][curPoint.second + 1] == 15){
+            curPoint.first += 1;
+            curPoint.second += 1;
+        }
+        else if (simpleMaze[curPoint.first][curPoint.second] - simpleMaze[curPoint.first - 1][curPoint.second - 1] == 15){
+            curPoint.first -= 1;
+            curPoint.second -= 1;
+        }
+        else if (simpleMaze[curPoint.first][curPoint.second] - simpleMaze[curPoint.first - 1][curPoint.second + 1] == 12){
+            curPoint.first -= 1;
+            curPoint.second += 1;
+        }
+        else if (simpleMaze[curPoint.first][curPoint.second] - simpleMaze[curPoint.first + 1][curPoint.second - 1] == 12){
+            curPoint.first += 1;
+            curPoint.second -= 1;
+        }
+
 
         this->reader.pixels[curPoint.first-1][curPoint.second-1] = pathColor;
     }
